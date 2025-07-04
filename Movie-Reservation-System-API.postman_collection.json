@@ -1,0 +1,1309 @@
+{
+  "info": {
+    "name": "Movie Reservation System API",
+    "description": "Complete API testing collection for the Movie Reservation System",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "movieId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "theaterId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "showtimeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "reservationId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/../health",
+          "host": ["{{baseUrl}}"],
+          "path": ["..", "health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', response.token);",
+                  "    pm.collectionVariables.set('userId', response.user.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123\",\n  \"phone\": \"+1234567890\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"preferences\": {\n    \"favoriteGenres\": [\"Action\", \"Comedy\"],\n    \"notifications\": {\n      \"email\": true,\n      \"sms\": false\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('adminToken', response.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Admin\",\n  \"lastName\": \"User\",\n  \"email\": \"admin@moviereservation.com\",\n  \"password\": \"Admin123\",\n  \"phone\": \"+1234567891\",\n  \"dateOfBirth\": \"1985-01-01\",\n  \"preferences\": {\n    \"favoriteGenres\": [\"Action\", \"Drama\"],\n    \"notifications\": {\n      \"email\": true,\n      \"sms\": true\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', response.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('adminToken', response.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@moviereservation.com\",\n  \"password\": \"Admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John Updated\",\n  \"phone\": \"+1234567899\",\n  \"preferences\": {\n    \"favoriteGenres\": [\"Action\", \"Comedy\", \"Drama\"],\n    \"notifications\": {\n      \"email\": true,\n      \"sms\": true\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Password123\",\n  \"newPassword\": \"NewPassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "change-password"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Movies",
+      "item": [
+        {
+          "name": "Get All Movies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/movies?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Featured Movies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/movies/featured",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies", "featured"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Movie (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('movieId', response.movie._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Avengers: Endgame\",\n  \"description\": \"The fourth installment in the Avengers saga is the culmination of 22 interconnected films and the climax of an epic journey.\",\n  \"director\": \"Anthony Russo, Joe Russo\",\n  \"cast\": [\n    {\n      \"name\": \"Robert Downey Jr.\",\n      \"role\": \"Tony Stark / Iron Man\"\n    },\n    {\n      \"name\": \"Chris Evans\",\n      \"role\": \"Steve Rogers / Captain America\"\n    },\n    {\n      \"name\": \"Mark Ruffalo\",\n      \"role\": \"Bruce Banner / Hulk\"\n    }\n  ],\n  \"genre\": [\"Action\", \"Adventure\", \"Drama\"],\n  \"duration\": 181,\n  \"rating\": \"PG-13\",\n  \"language\": \"English\",\n  \"releaseDate\": \"2019-04-26\",\n  \"poster\": \"https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg\",\n  \"trailer\": \"https://www.youtube.com/watch?v=TcMBFSGVi1c\",\n  \"imdbRating\": 8.4,\n  \"budget\": 356000000,\n  \"boxOffice\": 2797800564,\n  \"tags\": [\"superhero\", \"marvel\", \"mcu\", \"finale\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/movies",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Another Movie (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Dark Knight\",\n  \"description\": \"Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets.\",\n  \"director\": \"Christopher Nolan\",\n  \"cast\": [\n    {\n      \"name\": \"Christian Bale\",\n      \"role\": \"Bruce Wayne / Batman\"\n    },\n    {\n      \"name\": \"Heath Ledger\",\n      \"role\": \"The Joker\"\n    },\n    {\n      \"name\": \"Aaron Eckhart\",\n      \"role\": \"Harvey Dent / Two-Face\"\n    }\n  ],\n  \"genre\": [\"Action\", \"Crime\", \"Drama\"],\n  \"duration\": 152,\n  \"rating\": \"PG-13\",\n  \"language\": \"English\",\n  \"releaseDate\": \"2008-07-18\",\n  \"poster\": \"https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg\",\n  \"trailer\": \"https://www.youtube.com/watch?v=EXeTwQWrcwY\",\n  \"imdbRating\": 9.0,\n  \"budget\": 185000000,\n  \"boxOffice\": 1004558444,\n  \"tags\": [\"batman\", \"superhero\", \"dc\", \"classic\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/movies",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movie by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/movies/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies", "{{movieId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movies by Genre",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/movies/genre/Action",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies", "genre", "Action"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Movies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/movies?search=Avengers&genre=Action&sortBy=rating",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Avengers"
+                },
+                {
+                  "key": "genre",
+                  "value": "Action"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "rating"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Movie (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"imdbRating\": 8.5,\n  \"tags\": [\"superhero\", \"marvel\", \"mcu\", \"finale\", \"epic\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/movies/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies", "{{movieId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movie Stats (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movies/admin/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies", "admin", "stats"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Theaters",
+      "item": [
+        {
+          "name": "Get All Theaters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/theaters?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["theaters"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Theater (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('theaterId', response.theater._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Grand Cinema Downtown\",\n  \"location\": {\n    \"address\": \"123 Main Street\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10001\",\n    \"coordinates\": {\n      \"lat\": 40.7128,\n      \"lng\": -74.0060\n    }\n  },\n  \"capacity\": 150,\n  \"amenities\": [\"IMAX\", \"Dolby Atmos\", \"Reclining Seats\", \"Food Service\", \"Wheelchair Accessible\", \"Parking Available\"],\n  \"priceMultiplier\": {\n    \"regular\": 1.0,\n    \"premium\": 1.5,\n    \"vip\": 2.0\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/theaters",
+              "host": ["{{baseUrl}}"],
+              "path": ["theaters"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Another Theater (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Luxury Cinema Uptown\",\n  \"location\": {\n    \"address\": \"456 Broadway Ave\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10025\",\n    \"coordinates\": {\n      \"lat\": 40.7831,\n      \"lng\": -73.9712\n    }\n  },\n  \"capacity\": 200,\n  \"amenities\": [\"3D\", \"Dolby Atmos\", \"Reclining Seats\", \"Food Service\", \"Wheelchair Accessible\"],\n  \"priceMultiplier\": {\n    \"regular\": 1.2,\n    \"premium\": 1.8,\n    \"vip\": 2.5\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/theaters",
+              "host": ["{{baseUrl}}"],
+              "path": ["theaters"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Theater by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/theaters/{{theaterId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["theaters", "{{theaterId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Theaters by City",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/theaters/city/New York",
+              "host": ["{{baseUrl}}"],
+              "path": ["theaters", "city", "New York"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Theater (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amenities\": [\"IMAX\", \"Dolby Atmos\", \"Reclining Seats\", \"Food Service\", \"Wheelchair Accessible\", \"Parking Available\", \"3D\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/theaters/{{theaterId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["theaters", "{{theaterId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Theater Stats (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/theaters/admin/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["theaters", "admin", "stats"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Showtimes",
+      "item": [
+        {
+          "name": "Get All Showtimes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/showtimes?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["showtimes"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Showtime (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('showtimeId', response.showtime._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"movie\": \"{{movieId}}\",\n  \"theater\": \"{{theaterId}}\",\n  \"startTime\": \"2025-07-05T19:00:00.000Z\",\n  \"endTime\": \"2025-07-05T22:01:00.000Z\",\n  \"basePrice\": 15.00,\n  \"language\": \"English\",\n  \"format\": \"IMAX\",\n  \"specialOffers\": [\n    {\n      \"type\": \"early_bird\",\n      \"discount\": 20,\n      \"description\": \"20% off for bookings made 24 hours in advance\",\n      \"validUntil\": \"2025-07-04T19:00:00.000Z\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/showtimes",
+              "host": ["{{baseUrl}}"],
+              "path": ["showtimes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Another Showtime (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"movie\": \"{{movieId}}\",\n  \"theater\": \"{{theaterId}}\",\n  \"startTime\": \"2025-07-06T15:00:00.000Z\",\n  \"endTime\": \"2025-07-06T18:01:00.000Z\",\n  \"basePrice\": 12.00,\n  \"language\": \"English\",\n  \"format\": \"2D\",\n  \"specialOffers\": [\n    {\n      \"type\": \"student\",\n      \"discount\": 15,\n      \"description\": \"15% off for students with valid ID\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/showtimes",
+              "host": ["{{baseUrl}}"],
+              "path": ["showtimes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Showtime by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/showtimes/{{showtimeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["showtimes", "{{showtimeId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Showtimes by Movie",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/showtimes/movie/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["showtimes", "movie", "{{movieId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Seats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/showtimes/{{showtimeId}}/seats",
+              "host": ["{{baseUrl}}"],
+              "path": ["showtimes", "{{showtimeId}}", "seats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Showtime (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"basePrice\": 16.00,\n  \"specialOffers\": [\n    {\n      \"type\": \"early_bird\",\n      \"discount\": 25,\n      \"description\": \"25% off for bookings made 24 hours in advance\",\n      \"validUntil\": \"2025-07-04T19:00:00.000Z\"\n    },\n    {\n      \"type\": \"group\",\n      \"discount\": 10,\n      \"description\": \"10% off for groups of 5 or more\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/showtimes/{{showtimeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["showtimes", "{{showtimeId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reservations",
+      "item": [
+        {
+          "name": "Create Reservation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('reservationId', response.reservation._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showtime\": \"{{showtimeId}}\",\n  \"seats\": [\n    {\n      \"row\": \"A\",\n      \"number\": 5\n    },\n    {\n      \"row\": \"A\",\n      \"number\": 6\n    }\n  ],\n  \"paymentDetails\": {\n    \"method\": \"credit_card\",\n    \"transactionId\": \"txn_123456789\",\n    \"currency\": \"USD\"\n  },\n  \"contactInfo\": {\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+1234567890\"\n  },\n  \"specialRequests\": \"Aisle seats preferred\",\n  \"isGift\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reservations",
+              "host": ["{{baseUrl}}"],
+              "path": ["reservations"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Reservations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reservations/user?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["reservations", "user"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Reservation by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reservations/{{reservationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["reservations", "{{reservationId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Reservation",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactInfo\": {\n    \"email\": \"john.doe.updated@example.com\",\n    \"phone\": \"+1234567899\"\n  },\n  \"specialRequests\": \"Please provide extra legroom if available\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reservations/{{reservationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["reservations", "{{reservationId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Check-in Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reservations/{{reservationId}}/checkin",
+              "host": ["{{baseUrl}}"],
+              "path": ["reservations", "{{reservationId}}", "checkin"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Plans changed - unable to attend\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reservations/{{reservationId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["reservations", "{{reservationId}}", "cancel"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Reservations (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reservations?page=1&limit=10&status=confirmed",
+              "host": ["{{baseUrl}}"],
+              "path": ["reservations"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "confirmed"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Get Revenue Report (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/revenue?startDate=2025-07-01&endDate=2025-07-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "revenue"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-07-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-07-31"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Occupancy Report (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/occupancy?startDate=2025-07-01&endDate=2025-07-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "occupancy"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-07-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-07-31"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Popular Movies Report (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/popular-movies?startDate=2025-07-01&endDate=2025-07-31&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "popular-movies"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-07-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-07-31"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Analytics Report (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/user-analytics?startDate=2025-07-01&endDate=2025-07-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "user-analytics"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-07-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-07-31"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Theater Performance Report (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/theater-performance?startDate=2025-07-01&endDate=2025-07-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "theater-performance"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-07-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-07-31"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Dashboard Summary (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reports/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "dashboard"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Operations",
+      "item": [
+        {
+          "name": "Get All Users (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/users?page=1&limit=10&role=user",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "role",
+                  "value": "user"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/users/{{userId}}/role",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "users", "{{userId}}", "role"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Movie (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movies/{{movieId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["movies", "{{movieId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Theater (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/theaters/{{theaterId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["theaters", "{{theaterId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Showtime (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/showtimes/{{showtimeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["showtimes", "{{showtimeId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
